@@ -93,16 +93,6 @@
         <version>${jetty.version}</version>
     </dependency>
     <dependency>
-      <groupId>tomcat</groupId>
-      <artifactId>jasper-compiler</artifactId>
-      <version>${jasper.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>tomcat</groupId>
-      <artifactId>jasper-runtime</artifactId>
-      <version>${jasper.version}</version>
-    </dependency>
-    <dependency>
       <groupId>org.apache.thrift</groupId>
       <artifactId>libfb303</artifactId>
       <version>${libfb303.version}</version>
