@@ -45,6 +45,7 @@ import org.apache.hadoop.hive.common.LogUtils;
 import org.apache.hadoop.hive.common.io.CachingPrintStream;
 import org.apache.hadoop.hive.common.metrics.common.Metrics;
 import org.apache.hadoop.hive.common.metrics.common.MetricsConstant;
+import org.apache.hadoop.hive.common.metrics.common.MetricsFactory;
 import org.apache.hadoop.hive.conf.HiveConf;
 import org.apache.hadoop.hive.conf.HiveConf.ConfVars;
 import org.apache.hadoop.hive.ql.CompilationOpContext;
@@ -100,6 +101,7 @@ public class MapredLocalTask extends Task<MapredLocalWork> implements Serializab
   private JobConf job;
   public static transient final Logger l4j = LoggerFactory.getLogger(MapredLocalTask.class);
   static final String HIVE_LOCAL_TASK_CHILD_OPTS_KEY = "HIVE_LOCAL_TASK_CHILD_OPTS";
+  static final String MAPRED_LOCAL_TASK_CHILD_JVM_METRIC = "mapred_local_task_child_jvm";
   public static MemoryMXBean memoryMXBean;
   private static final Logger LOG = LoggerFactory.getLogger(MapredLocalTask.class);
 
@@ -162,6 +164,7 @@ public class MapredLocalTask extends Task<MapredLocalWork> implements Serializab
   }
 
   public int executeInChildVM(DriverContext driverContext) {
+    Metrics metrics = MetricsFactory.getInstance();
     // execute in child jvm
     try {
       // generate the cmd line to run in the child jvm
@@ -324,6 +327,9 @@ public class MapredLocalTask extends Task<MapredLocalWork> implements Serializab
 
       // Run ExecDriver in another JVM
       executor = Runtime.getRuntime().exec(cmdLine, env, new File(workDir));
+      if (metrics != null) {
+        metrics.incrementCounter(MAPRED_LOCAL_TASK_CHILD_JVM_METRIC);
+      }
 
       CachingPrintStream errPrintStream = new CachingPrintStream(System.err);
 
@@ -355,6 +361,9 @@ public class MapredLocalTask extends Task<MapredLocalWork> implements Serializab
     } finally {
       if (secureDoAs != null) {
         secureDoAs.close();
+      }
+      if (metrics != null) {
+        metrics.decrementCounter(MAPRED_LOCAL_TASK_CHILD_JVM_METRIC);
       }
     }
   }
