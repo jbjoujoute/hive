@@ -164,7 +164,7 @@ public class MapredLocalTask extends Task<MapredLocalWork> implements Serializab
   }
 
   public int executeInChildVM(DriverContext driverContext) {
-    Metrics metrics = MetricsFactory.getInstance();
+    Metrics metrics;
     // execute in child jvm
     try {
       // generate the cmd line to run in the child jvm
@@ -323,13 +323,14 @@ public class MapredLocalTask extends Task<MapredLocalWork> implements Serializab
         LOG.debug("Setting env: " + name + "=" + LogUtils.maskIfPassword(name, value));
       }
 
-      LOG.info("Executing: " + cmdLine);
-
-      // Run ExecDriver in another JVM
-      executor = Runtime.getRuntime().exec(cmdLine, env, new File(workDir));
+      metrics = MetricsFactory.getInstance();
       if (metrics != null) {
         metrics.incrementCounter(MAPRED_LOCAL_TASK_CHILD_JVM_METRIC);
       }
+
+      LOG.info("Executing: " + cmdLine);
+      // Run ExecDriver in another JVM
+      executor = Runtime.getRuntime().exec(cmdLine, env, new File(workDir));
 
       CachingPrintStream errPrintStream = new CachingPrintStream(System.err);
 
