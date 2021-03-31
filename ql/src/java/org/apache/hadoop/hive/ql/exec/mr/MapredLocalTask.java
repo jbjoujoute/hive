@@ -164,7 +164,7 @@ public class MapredLocalTask extends Task<MapredLocalWork> implements Serializab
   }
 
   public int executeInChildVM(DriverContext driverContext) {
-    Metrics metrics;
+    Metrics metrics = null;
     // execute in child jvm
     try {
       // generate the cmd line to run in the child jvm
