@@ -99,9 +99,13 @@ public class ConsulURLHook implements URIResolverHook {
         LOG.info(String.format("Querying Consul (%s) for service %s", consulHost, service));
         for(Iterator<HealthService> i = healthyServices.getValue().iterator(); i.hasNext(); ) {
             HealthService hn = i.next();
+            String host = hn.getService().getAddress();
+            if (host == null || host.length() == 0) {
+                host = hn.getNode().getAddress();
+            }
             URI thriftUri = UriBuilder.fromUri("")
                     .scheme("thrift")
-                    .host(hn.getNode().getAddress())
+                    .host(host)
                     .port(hn.getService().getPort())
                     .build();
             thriftUris.add(thriftUri);
