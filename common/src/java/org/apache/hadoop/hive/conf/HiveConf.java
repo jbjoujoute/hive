@@ -3401,6 +3401,35 @@ public class HiveConf extends Configuration {
 
     HIVE_LINEAGE_INFO("hive.lineage.hook.info.enabled", false, "Whether Hive provides lineage information to hooks.");
 
+    /**
+     * /!\ Dummy configurations that are backported for compatibility with Spark.
+     * Spark, by default, expects Hive 1.2.1 sources
+     */
+    HIVESTATSJDBCDRIVER("hive.stats.jdbcdriver",
+        "org.apache.derby.jdbc.EmbeddedDriver",
+        "The JDBC driver for the database that stores temporary Hive statistics."),
+    HIVESTATSDBCONNECTIONSTRING("hive.stats.dbconnectionstring",
+        "jdbc:derby:;databaseName=TempStatsStore;create=true",
+        "The default connection string for the database that stores temporary Hive statistics."), // automatically create database
+    HIVE_STATS_JDBC_TIMEOUT("hive.stats.jdbc.timeout", "30s", new TimeValidator(TimeUnit.SECONDS),
+        "Timeout value used by JDBC connection and statements."),
+    HIVE_STATS_RETRIES_MAX("hive.stats.retries.max", 0,
+        "Maximum number of retries when stats publisher/aggregator got an exception updating intermediate database. \n" +
+        "Default is no tries on failures."),
+    HIVE_STATS_RETRIES_WAIT("hive.stats.retries.wait", "3000ms",
+        new TimeValidator(TimeUnit.MILLISECONDS),
+        "The base waiting window before the next retry. The actual wait time is calculated by " +
+        "baseWindow * failures baseWindow * (failure + 1) * (random number between [0.0,1.0])."),
+    HIVE_STATS_COLLECT_RAWDATASIZE("hive.stats.collect.rawdatasize", true,
+        "should the raw data size be collected when analyzing tables"),
+    HIVE_STATS_KEY_PREFIX_MAX_LENGTH("hive.stats.key.prefix.max.length", 150,
+        "Determines if when the prefix of the key used for intermediate stats collection\n" +
+        "exceeds a certain length, a hash of the key is used instead.  If the value < 0 then hashing"),
+    HIVE_STATS_KEY_PREFIX_RESERVE_LENGTH("hive.stats.key.prefix.reserve.length", 24,
+        "Reserved length for postfix of stats key. Currently only meaningful for counter type which should\n" +
+        "keep length of full stats key smaller than max length configured by hive.stats.key.prefix.max.length.\n" +
+        "For counter type, it should be bigger than the length of LB spec if exists."),
+
     public final String varname;
     public final String altName;
     private final String defaultExpr;
