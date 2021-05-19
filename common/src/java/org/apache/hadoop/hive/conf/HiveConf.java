@@ -3399,7 +3399,7 @@ public class HiveConf extends Configuration {
             "This is a performance optimization that forces the final FileSinkOperator to write to the blobstore.\n" +
             "See HIVE-15121 for details."),
 
-    HIVE_LINEAGE_INFO("hive.lineage.hook.info.enabled", false, "Whether Hive provides lineage information to hooks.");
+    HIVE_LINEAGE_INFO("hive.lineage.hook.info.enabled", false, "Whether Hive provides lineage information to hooks."),
 
     /**
      * /!\ Dummy configurations that are backported for compatibility with Spark.
@@ -3428,7 +3428,7 @@ public class HiveConf extends Configuration {
     HIVE_STATS_KEY_PREFIX_RESERVE_LENGTH("hive.stats.key.prefix.reserve.length", 24,
         "Reserved length for postfix of stats key. Currently only meaningful for counter type which should\n" +
         "keep length of full stats key smaller than max length configured by hive.stats.key.prefix.max.length.\n" +
-        "For counter type, it should be bigger than the length of LB spec if exists."),
+        "For counter type, it should be bigger than the length of LB spec if exists.");
 
     public final String varname;
     public final String altName;
