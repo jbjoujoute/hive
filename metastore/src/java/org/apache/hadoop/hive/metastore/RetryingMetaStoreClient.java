@@ -94,6 +94,20 @@ public class RetryingMetaStoreClient implements InvocationHandler {
     return getProxy(hiveConf, hookLoader, null, mscClassName, true);
   }
 
+  /**
+   * Added for compatibility with Spark SQL
+   */
+  public static IMetaStoreClient getProxy(HiveConf hiveConf, HiveMetaHookLoader hookLoader,
+      Map<String, Long> metaCallTimeMap, String mscClassName) throws MetaException {
+
+    return getProxy(hiveConf,
+            new Class[] {HiveConf.class, HiveMetaHookLoader.class},
+            new Object[] {hiveConf, hookLoader},
+            new ConcurrentHashMap(metaCallTimeMap),
+            mscClassName
+    );
+  }
+
   public static IMetaStoreClient getProxy(HiveConf hiveConf, HiveMetaHookLoader hookLoader,
       ConcurrentHashMap<String, Long> metaCallTimeMap, String mscClassName, boolean allowEmbedded)
           throws MetaException {
