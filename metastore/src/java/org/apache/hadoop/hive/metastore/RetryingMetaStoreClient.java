@@ -42,8 +42,6 @@ import org.apache.thrift.TException;
 import org.apache.thrift.protocol.TProtocolException;
 import org.apache.thrift.transport.TTransportException;
 
-import com.google.common.annotations.VisibleForTesting;
-
 /**
  * RetryingMetaStoreClient. Creates a proxy for a IMetaStoreClient
  * implementation and retries calls to it on failure.
@@ -91,7 +89,6 @@ public class RetryingMetaStoreClient implements InvocationHandler {
     );
   }
 
-  @VisibleForTesting
   public static IMetaStoreClient getProxy(HiveConf hiveConf, HiveMetaHookLoader hookLoader,
       String mscClassName) throws MetaException {
     return getProxy(hiveConf, hookLoader, null, mscClassName, true);
