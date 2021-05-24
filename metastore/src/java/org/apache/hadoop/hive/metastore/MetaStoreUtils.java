@@ -581,6 +581,13 @@ public class MetaStoreUtils {
   }
 
   /**
+   * Added for compatibility with Spark SQL
+   */
+  static public boolean validateName(String name) {
+    return validateName(name, null);
+  }
+
+  /**
    * validateName
    *
    * Checks the name conforms to our standars which are: "[a-zA-z_0-9]+". checks
