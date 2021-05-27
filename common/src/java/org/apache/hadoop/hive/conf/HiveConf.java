@@ -22,6 +22,7 @@ import com.google.common.base.Joiner;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.hadoop.conf.Configuration;
+import org.apache.hadoop.fs.CommonConfigurationKeysPublic;
 import org.apache.hadoop.hive.common.FileUtils;
 import org.apache.hadoop.hive.common.classification.InterfaceAudience;
 import org.apache.hadoop.hive.common.classification.InterfaceAudience.LimitedPrivate;
@@ -3428,7 +3429,8 @@ public class HiveConf extends Configuration {
     HIVE_STATS_KEY_PREFIX_RESERVE_LENGTH("hive.stats.key.prefix.reserve.length", 24,
         "Reserved length for postfix of stats key. Currently only meaningful for counter type which should\n" +
         "keep length of full stats key smaller than max length configured by hive.stats.key.prefix.max.length.\n" +
-        "For counter type, it should be bigger than the length of LB spec if exists.");
+        "For counter type, it should be bigger than the length of LB spec if exists."),
+    HADOOPFS(CommonConfigurationKeysPublic.FS_DEFAULT_NAME_KEY, null, "", true);
 
     public final String varname;
     public final String altName;
