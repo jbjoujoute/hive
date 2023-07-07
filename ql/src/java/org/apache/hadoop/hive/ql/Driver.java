@@ -205,6 +205,16 @@ public class Driver implements CommandProcessor {
     // resource releases
     public final ReentrantLock stateLock = new ReentrantLock();
     public DriverState driverState = DriverState.INITIALIZED;
+    private static ThreadLocal<LockedDriverState> lds = new ThreadLocal<LockedDriverState>() {
+      @Override
+      protected LockedDriverState initialValue() {
+        return new LockedDriverState();
+      }
+    };
+
+    public static LockedDriverState getLockedDriverState() {
+      return lds.get();
+    }
   }
 
   private boolean checkConcurrency() {
