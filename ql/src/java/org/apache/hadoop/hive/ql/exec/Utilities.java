@@ -2129,8 +2129,8 @@ public final class Utilities {
       if (numExecutors > 1) {
         LOG.info("Using " + numExecutors + " threads for getContentSummary");
         executor = Executors.newFixedThreadPool(numExecutors,
-            new ThreadFactoryBuilder().setDaemon(true)
-                .setNameFormat("Get-Input-Summary-%d").build());
+                new ThreadFactoryBuilder().setDaemon(true)
+                        .setNameFormat("Get-Input-Summary-%d").build());
       } else {
         executor = null;
       }
@@ -2178,7 +2178,7 @@ public final class Utilities {
         final Map<String, Operator<?>> aliasToWork = work.getAliasToWork();
         final Map<Path, ArrayList<String>> pathToAlias = work.getPathToAliases();
         final PartitionDesc partDesc = work.getPathToPartitionInfo().get(p);
-          Runnable r = new Runnable() {
+        Runnable r = new Runnable() {
           @Override
           public void run() {
             try {
@@ -2232,7 +2232,6 @@ public final class Utilities {
               // IOException is not considered as a common case.
               LOG.info("Cannot get size of " + pathStr + ". Safely ignored.");
             }
-
           }
         };
 
@@ -2243,6 +2242,7 @@ public final class Utilities {
           results.add(result);
         }
       }
+
       if (executor != null) {
         for (Future<?> result : results) {
           boolean executorDone = false;
@@ -2265,15 +2265,15 @@ public final class Utilities {
       for (Map.Entry<String, ContentSummary> entry : resultMap.entrySet()) {
         ContentSummary cs = entry.getValue();
 
-          summary[0] += cs.getLength();
-          summary[1] += cs.getFileCount();
-          summary[2] += cs.getDirectoryCount();
+        summary[0] += cs.getLength();
+        summary[1] += cs.getFileCount();
+        summary[2] += cs.getDirectoryCount();
 
-          ctx.addCS(entry.getKey(), cs);
-          LOG.info("Cache Content Summary for " + entry.getKey() + " length: " + cs.getLength()
-              + " file count: "
-              + cs.getFileCount() + " directory count: " + cs.getDirectoryCount());
-        }
+        ctx.addCS(entry.getKey(), cs);
+        LOG.info("Cache Content Summary for " + entry.getKey() + " length: " + cs.getLength()
+                + " file count: "
+                + cs.getFileCount() + " directory count: " + cs.getDirectoryCount());
+      }
 
       return new ContentSummary(summary[0], summary[1], summary[2]);
     } finally {
@@ -3009,6 +3009,9 @@ public final class Utilities {
       boolean hasLogged = false;
       // Note: this copies the list because createDummyFileForEmptyPartition may modify the map.
       for (Path file : new LinkedList<Path>(work.getPathToAliases().keySet())) {
+        if (lDrvStat != null && lDrvStat.driverState == DriverState.INTERRUPT)
+          throw new IOException("Operation is Canceled.");
+
         List<String> aliases = work.getPathToAliases().get(file);
         if (aliases.contains(alias)) {
           if (file != null) {
@@ -3075,8 +3078,8 @@ public final class Utilities {
 
   @VisibleForTesting
   static List<Path> getInputPathsWithPool(JobConf job, MapWork work, Path hiveScratchDir,
-                                          Context ctx, boolean skipDummy, List<Path> pathsToAdd,
-                                          ExecutorService pool) throws IOException, ExecutionException, InterruptedException {
+                                           Context ctx, boolean skipDummy, List<Path> pathsToAdd,
+                                           ExecutorService pool) throws IOException, ExecutionException, InterruptedException {
     LockedDriverState lDrvStat = LockedDriverState.getLockedDriverState();
     List<Path> finalPathsToAdd = new ArrayList<>();
     try {
@@ -3127,7 +3130,8 @@ public final class Utilities {
     @Override
     public Path call() throws Exception {
       if (!this.skipDummy && isEmptyPath(this.job, this.path, this.ctx)) {
-        return createDummyFileForEmptyPartition(this.path, this.job, this.work, this.hiveScratchDir);
+        return createDummyFileForEmptyPartition(this.path, this.job, this.work.getPathToPartitionInfo().get(this.path),
+                this.hiveScratchDir);
       }
       return this.path;
     }
@@ -3165,14 +3169,12 @@ public final class Utilities {
   }
 
   @SuppressWarnings("rawtypes")
-  private static Path createDummyFileForEmptyPartition(Path path, JobConf job, MapWork work,
-      Path hiveScratchDir)
-          throws Exception {
+  private static Path createDummyFileForEmptyPartition(Path path, JobConf job, PartitionDesc partDesc,
+                                                       Path hiveScratchDir) throws Exception {
 
     String strPath = path.toString();
 
     // The input file does not exist, replace it by a empty file
-    PartitionDesc partDesc = work.getPathToPartitionInfo().get(path);
     if (partDesc.getTableDesc().isNonNative()) {
       // if this isn't a hive table we can't create an empty file for it.
       return path;
@@ -3189,15 +3191,6 @@ public final class Utilities {
     if (LOG.isInfoEnabled()) {
       LOG.info("Changed input file " + strPath + " to empty file " + newPath + " (" + oneRow + ")");
     }
-
-    // update the work
-
-    work.addPathToAlias(newPath, work.getPathToAliases().get(path));
-    work.removePathToAlias(path);
-
-    work.removePathToPartitionInfo(path);
-    work.addPathToPartitionInfo(newPath, partDesc);
-
     return newPath;
   }
 

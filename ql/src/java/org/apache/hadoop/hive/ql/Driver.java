@@ -212,8 +212,17 @@ public class Driver implements CommandProcessor {
       }
     };
 
+    public static void setLockedDriverState(LockedDriverState lDrv) {
+      lds.set(lDrv);
+    }
+
     public static LockedDriverState getLockedDriverState() {
       return lds.get();
+    }
+
+    public static void removeLockedDriverState() {
+      if (lds != null)
+        lds.remove();
     }
   }
 
@@ -432,6 +441,8 @@ public class Driver implements CommandProcessor {
     if (resetTaskIds) {
       TaskFactory.resetId();
     }
+
+    LockedDriverState.setLockedDriverState(lDrvState);
 
     String queryId = conf.getVar(HiveConf.ConfVars.HIVEQUERYID);
 
@@ -1425,6 +1436,8 @@ public class Driver implements CommandProcessor {
     errorMessage = null;
     SQLState = null;
     downstreamError = null;
+    LockedDriverState.setLockedDriverState(lDrvState);
+
     lDrvState.stateLock.lock();
     try {
       if (alreadyCompiled) {
@@ -2399,6 +2412,7 @@ public class Driver implements CommandProcessor {
       lDrvState.driverState = DriverState.CLOSED;
     } finally {
       lDrvState.stateLock.unlock();
+      LockedDriverState.removeLockedDriverState();
     }
     if (SessionState.get() != null) {
       SessionState.get().getLineageState().clear();
