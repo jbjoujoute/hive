@@ -63,7 +63,6 @@ import org.apache.hadoop.hive.druid.serde.DruidWritable;
 import org.joda.time.DateTime;
 import org.joda.time.Interval;
 import org.junit.Assert;
-import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
@@ -108,8 +107,6 @@ public class TestDruidRecordWriter {
           )
   );
 
-  // This test need this patch https://github.com/druid-io/druid/pull/3483
-  @Ignore
   @Test
   public void testWrite() throws IOException, SegmentLoadingException {
 

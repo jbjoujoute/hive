@@ -19,6 +19,7 @@ package org.apache.hadoop.hive.ql.optimizer.calcite.stats;
 
 import java.util.ArrayList;
 import java.util.BitSet;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -478,10 +479,10 @@ public class HiveRelMdPredicates implements MetadataHandler<BuiltInMetadata.Pred
         }
         return RelOptPredicateList.of(
           pulledUpPredicates, leftInferredPredicates, rightInferredPredicates);
-      case LEFT:    
+      case LEFT:
         return RelOptPredicateList.of(    
           leftPreds, EMPTY_LIST, rightInferredPredicates);
-      case RIGHT:   
+      case RIGHT:
         return RelOptPredicateList.of(    
           rightPreds, leftInferredPredicates, EMPTY_LIST);
       default:
@@ -532,7 +533,7 @@ public class HiveRelMdPredicates implements MetadataHandler<BuiltInMetadata.Pred
         public Iterator<Mapping> iterator() {
           ImmutableBitSet fields = exprFields.get(predicate.toString());
           if (fields.cardinality() == 0) {
-            return Iterators.emptyIterator();
+            return Collections.emptyIterator();
           }
           return new ExprsItr(fields);
         }
