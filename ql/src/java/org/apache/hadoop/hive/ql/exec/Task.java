@@ -341,7 +341,8 @@ public abstract class Task<T extends Serializable> implements Serializable, Node
       findLeafs(List<Task<? extends Serializable>> rootTasks) {
     final List<Task<? extends Serializable>> leafTasks = new ArrayList<Task<?>>();
 
-    NodeUtils.iterateTask(rootTasks, Task.class, new NodeUtils.Function<Task>() {
+    Collection<Task<? extends Serializable>> rootTaskCollection = rootTasks;
+    NodeUtils.iterateTask(rootTaskCollection, Task.class, new NodeUtils.Function<Task>() {
       public void apply(Task task) {
         List dependents = task.getDependentTasks();
         if (dependents == null || dependents.isEmpty()) {

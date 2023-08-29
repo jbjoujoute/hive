@@ -366,7 +366,7 @@ public class CliConfigs {
 
   public static class HBaseNegativeCliConfig extends AbstractCliConfig {
     public HBaseNegativeCliConfig() {
-      super(CoreHBaseNegativeCliDriver.class);
+      super(CoreNegativeCliDriver.class);
       try {
         setQueryDir("hbase-handler/src/test/queries/negative");
 

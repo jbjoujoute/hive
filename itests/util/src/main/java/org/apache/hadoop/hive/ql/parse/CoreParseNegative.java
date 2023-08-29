@@ -52,7 +52,7 @@ public class CoreParseNegative extends CliAdapter{
       String hadoopVer = cliConfig.getHadoopVersion();
       qt = new QTestUtil((cliConfig.getResultsDir()), (cliConfig.getLogDir()), miniMR, null,
           hadoopVer,
-       initScript, cleanupScript, false, false);
+       initScript, cleanupScript, false);
     } catch (Exception e) {
       System.err.println("Exception: " + e.getMessage());
       e.printStackTrace();
