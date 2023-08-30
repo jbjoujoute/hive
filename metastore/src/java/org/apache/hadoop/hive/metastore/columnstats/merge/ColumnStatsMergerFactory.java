@@ -46,7 +46,7 @@ public class ColumnStatsMergerFactory {
   }
 
   public static ColumnStatsMerger getColumnStatsMerger(ColumnStatisticsObj statsObjNew,
-                                                       ColumnStatisticsObj statsObjOld) {
+      ColumnStatisticsObj statsObjOld) {
     ColumnStatsMerger agg;
     _Fields typeNew = statsObjNew.getStatsData().getSetField();
     _Fields typeOld = statsObjOld.getStatsData().getSetField();

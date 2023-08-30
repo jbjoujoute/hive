@@ -69,32 +69,32 @@ public class ColumnStatsAggregatorFactory {
     cso.setColName(colName);
     cso.setColType(colType);
     switch (type) {
-      case BOOLEAN_STATS:
-        csd.setBooleanStats(new BooleanColumnStatsData());
-        break;
+    case BOOLEAN_STATS:
+      csd.setBooleanStats(new BooleanColumnStatsData());
+      break;
 
-      case LONG_STATS:
-        csd.setLongStats(new LongColumnStatsData());
-        break;
+    case LONG_STATS:
+      csd.setLongStats(new LongColumnStatsData());
+      break;
 
-      case DOUBLE_STATS:
-        csd.setDoubleStats(new DoubleColumnStatsData());
-        break;
+    case DOUBLE_STATS:
+      csd.setDoubleStats(new DoubleColumnStatsData());
+      break;
 
-      case STRING_STATS:
-        csd.setStringStats(new StringColumnStatsData());
-        break;
+    case STRING_STATS:
+      csd.setStringStats(new StringColumnStatsData());
+      break;
 
-      case BINARY_STATS:
-        csd.setBinaryStats(new BinaryColumnStatsData());
-        break;
+    case BINARY_STATS:
+      csd.setBinaryStats(new BinaryColumnStatsData());
+      break;
 
-      case DECIMAL_STATS:
-        csd.setDecimalStats(new DecimalColumnStatsData());
-        break;
+    case DECIMAL_STATS:
+      csd.setDecimalStats(new DecimalColumnStatsData());
+      break;
 
-      default:
-        throw new RuntimeException("Woh, bad.  Unknown stats type!");
+    default:
+      throw new RuntimeException("Woh, bad.  Unknown stats type!");
     }
 
     cso.setStatsData(csd);

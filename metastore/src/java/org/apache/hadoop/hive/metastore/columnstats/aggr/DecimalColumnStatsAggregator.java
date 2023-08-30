@@ -59,7 +59,7 @@ public class DecimalColumnStatsAggregator extends ColumnStatsAggregator implemen
       if (statsObj == null) {
         colType = cso.getColType();
         statsObj = ColumnStatsAggregatorFactory.newColumnStaticsObj(colName, colType, cso
-                .getStatsData().getSetField());
+            .getStatsData().getSetField());
       }
       if (numBitVectors <= 0 || !cso.getStatsData().getDecimalStats().isSetBitVectors()
           || cso.getStatsData().getDecimalStats().getBitVectors().length() == 0) {

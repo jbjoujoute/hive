@@ -51,7 +51,7 @@ public class LongColumnStatsAggregator extends ColumnStatsAggregator implements
       if (cs.getStatsObjSize() != 1) {
         throw new MetaException(
             "The number of columns should be exactly one in aggrStats, but found "
-                 + cs.getStatsObjSize());
+                + cs.getStatsObjSize());
       }
       ColumnStatisticsObj cso = cs.getStatsObjIterator().next();
       if (statsObj == null) {
