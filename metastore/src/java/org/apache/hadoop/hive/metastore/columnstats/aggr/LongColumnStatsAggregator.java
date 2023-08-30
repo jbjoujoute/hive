@@ -35,11 +35,11 @@ import org.apache.hadoop.hive.metastore.api.LongColumnStatsData;
 import org.apache.hadoop.hive.metastore.api.MetaException;
 
 public class LongColumnStatsAggregator extends ColumnStatsAggregator implements
-        IExtrapolatePartStatus {
+    IExtrapolatePartStatus {
 
   @Override
   public ColumnStatisticsObj aggregate(String colName, List<String> partNames,
-                                       List<ColumnStatistics> css) throws MetaException {
+      List<ColumnStatistics> css) throws MetaException {
     ColumnStatisticsObj statsObj = null;
 
     // check if all the ColumnStatisticsObjs contain stats and all the ndv are
@@ -50,17 +50,17 @@ public class LongColumnStatsAggregator extends ColumnStatsAggregator implements
     for (ColumnStatistics cs : css) {
       if (cs.getStatsObjSize() != 1) {
         throw new MetaException(
-                "The number of columns should be exactly one in aggrStats, but found "
-                        + cs.getStatsObjSize());
+            "The number of columns should be exactly one in aggrStats, but found "
+                 + cs.getStatsObjSize());
       }
       ColumnStatisticsObj cso = cs.getStatsObjIterator().next();
       if (statsObj == null) {
         colType = cso.getColType();
         statsObj = ColumnStatsAggregatorFactory.newColumnStaticsObj(colName, colType, cso
-                .getStatsData().getSetField());
+            .getStatsData().getSetField());
       }
       if (numBitVectors <= 0 || !cso.getStatsData().getLongStats().isSetBitVectors()
-              || cso.getStatsData().getLongStats().getBitVectors().length() == 0) {
+          || cso.getStatsData().getLongStats().getBitVectors().length() == 0) {
         isNDVBitVectorSet = false;
         break;
       }
@@ -85,14 +85,14 @@ public class LongColumnStatsAggregator extends ColumnStatsAggregator implements
         }
         if (isNDVBitVectorSet) {
           ndvEstimator.mergeEstimators(new NumDistinctValueEstimator(newData.getBitVectors(),
-                  ndvEstimator.getnumBitVectors()));
+              ndvEstimator.getnumBitVectors()));
         }
         if (aggregateData == null) {
           aggregateData = newData.deepCopy();
         } else {
           aggregateData.setLowValue(Math.min(aggregateData.getLowValue(), newData.getLowValue()));
           aggregateData
-                  .setHighValue(Math.max(aggregateData.getHighValue(), newData.getHighValue()));
+              .setHighValue(Math.max(aggregateData.getHighValue(), newData.getHighValue()));
           aggregateData.setNumNulls(aggregateData.getNumNulls() + newData.getNumNulls());
           aggregateData.setNumDVs(Math.max(aggregateData.getNumDVs(), newData.getNumDVs()));
         }
@@ -190,11 +190,11 @@ public class LongColumnStatsAggregator extends ColumnStatsAggregator implements
           } else {
             aggregateData.setLowValue(Math.min(aggregateData.getLowValue(), newData.getLowValue()));
             aggregateData.setHighValue(Math.max(aggregateData.getHighValue(),
-                    newData.getHighValue()));
+                newData.getHighValue()));
             aggregateData.setNumNulls(aggregateData.getNumNulls() + newData.getNumNulls());
           }
           ndvEstimator.mergeEstimators(new NumDistinctValueEstimator(newData.getBitVectors(),
-                  ndvEstimator.getnumBitVectors()));
+              ndvEstimator.getnumBitVectors()));
         }
         if (length > 0) {
           // we have to set ndv
@@ -209,7 +209,7 @@ public class LongColumnStatsAggregator extends ColumnStatsAggregator implements
         }
       }
       extrapolate(columnStatisticsData, partNames.size(), css.size(), adjustedIndexMap,
-              adjustedStatsMap, densityAvgSum / adjustedStatsMap.size());
+          adjustedStatsMap, densityAvgSum / adjustedStatsMap.size());
     }
     statsObj.setStatsData(columnStatisticsData);
     return statsObj;
@@ -217,8 +217,8 @@ public class LongColumnStatsAggregator extends ColumnStatsAggregator implements
 
   @Override
   public void extrapolate(ColumnStatisticsData extrapolateData, int numParts,
-                          int numPartsWithStats, Map<String, Double> adjustedIndexMap,
-                          Map<String, ColumnStatisticsData> adjustedStatsMap, double densityAvg) {
+      int numPartsWithStats, Map<String, Double> adjustedIndexMap,
+      Map<String, ColumnStatisticsData> adjustedStatsMap, double densityAvg) {
     int rightBorderInd = numParts;
     LongColumnStatsData extrapolateLongData = new LongColumnStatsData();
     Map<String, LongColumnStatsData> extractedAdjustedStatsMap = new HashMap<>();
@@ -226,11 +226,11 @@ public class LongColumnStatsAggregator extends ColumnStatsAggregator implements
       extractedAdjustedStatsMap.put(entry.getKey(), entry.getValue().getLongStats());
     }
     List<Map.Entry<String, LongColumnStatsData>> list = new LinkedList<Map.Entry<String, LongColumnStatsData>>(
-            extractedAdjustedStatsMap.entrySet());
+        extractedAdjustedStatsMap.entrySet());
     // get the lowValue
     Collections.sort(list, new Comparator<Map.Entry<String, LongColumnStatsData>>() {
       public int compare(Map.Entry<String, LongColumnStatsData> o1,
-                         Map.Entry<String, LongColumnStatsData> o2) {
+          Map.Entry<String, LongColumnStatsData> o2) {
         return o1.getValue().getLowValue() < o2.getValue().getLowValue() ? -1 : 1;
       }
     });
@@ -252,7 +252,7 @@ public class LongColumnStatsAggregator extends ColumnStatsAggregator implements
     // get the highValue
     Collections.sort(list, new Comparator<Map.Entry<String, LongColumnStatsData>>() {
       public int compare(Map.Entry<String, LongColumnStatsData> o1,
-                         Map.Entry<String, LongColumnStatsData> o2) {
+          Map.Entry<String, LongColumnStatsData> o2) {
         return o1.getValue().getHighValue() < o2.getValue().getHighValue() ? -1 : 1;
       }
     });
@@ -283,7 +283,7 @@ public class LongColumnStatsAggregator extends ColumnStatsAggregator implements
     long ndv = 0;
     Collections.sort(list, new Comparator<Map.Entry<String, LongColumnStatsData>>() {
       public int compare(Map.Entry<String, LongColumnStatsData> o1,
-                         Map.Entry<String, LongColumnStatsData> o2) {
+          Map.Entry<String, LongColumnStatsData> o2) {
         return o1.getValue().getNumDVs() < o2.getValue().getNumDVs() ? -1 : 1;
       }
     });

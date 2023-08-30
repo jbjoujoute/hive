@@ -54,42 +54,42 @@ public class ColumnStatsMergerFactory {
     typeNew = typeNew == typeOld ? typeNew : null;
     int numBitVectors = 0;
     switch (typeNew) {
-      case BOOLEAN_STATS:
-        agg = new BooleanColumnStatsMerger();
-        break;
-      case LONG_STATS: {
-        agg = new LongColumnStatsMerger();
-        int nbvNew = countNumBitVectors(statsObjNew.getStatsData().getLongStats().getBitVectors());
-        int nbvOld = countNumBitVectors(statsObjOld.getStatsData().getLongStats().getBitVectors());
-        numBitVectors = nbvNew == nbvOld ? nbvNew : 0;
-        break;
-      }
-      case DOUBLE_STATS: {
-        agg = new DoubleColumnStatsMerger();
-        int nbvNew = countNumBitVectors(statsObjNew.getStatsData().getDoubleStats().getBitVectors());
-        int nbvOld = countNumBitVectors(statsObjOld.getStatsData().getDoubleStats().getBitVectors());
-        numBitVectors = nbvNew == nbvOld ? nbvNew : 0;
-        break;
-      }
-      case STRING_STATS: {
-        agg = new StringColumnStatsMerger();
-        int nbvNew = countNumBitVectors(statsObjNew.getStatsData().getStringStats().getBitVectors());
-        int nbvOld = countNumBitVectors(statsObjOld.getStatsData().getStringStats().getBitVectors());
-        numBitVectors = nbvNew == nbvOld ? nbvNew : 0;
-        break;
-      }
-      case BINARY_STATS:
-        agg = new BinaryColumnStatsMerger();
-        break;
-      case DECIMAL_STATS: {
-        agg = new DecimalColumnStatsMerger();
-        int nbvNew = countNumBitVectors(statsObjNew.getStatsData().getDecimalStats().getBitVectors());
-        int nbvOld = countNumBitVectors(statsObjOld.getStatsData().getDecimalStats().getBitVectors());
-        numBitVectors = nbvNew == nbvOld ? nbvNew : 0;
-        break;
-      }
-      default:
-        throw new RuntimeException("Woh, bad.  Unknown stats type " + typeNew.toString());
+    case BOOLEAN_STATS:
+      agg = new BooleanColumnStatsMerger();
+      break;
+    case LONG_STATS: {
+      agg = new LongColumnStatsMerger();
+      int nbvNew = countNumBitVectors(statsObjNew.getStatsData().getLongStats().getBitVectors());
+      int nbvOld = countNumBitVectors(statsObjOld.getStatsData().getLongStats().getBitVectors());
+      numBitVectors = nbvNew == nbvOld ? nbvNew : 0;
+      break;
+    }
+    case DOUBLE_STATS: {
+      agg = new DoubleColumnStatsMerger();
+      int nbvNew = countNumBitVectors(statsObjNew.getStatsData().getDoubleStats().getBitVectors());
+      int nbvOld = countNumBitVectors(statsObjOld.getStatsData().getDoubleStats().getBitVectors());
+      numBitVectors = nbvNew == nbvOld ? nbvNew : 0;
+      break;
+    }
+    case STRING_STATS: {
+      agg = new StringColumnStatsMerger();
+      int nbvNew = countNumBitVectors(statsObjNew.getStatsData().getStringStats().getBitVectors());
+      int nbvOld = countNumBitVectors(statsObjOld.getStatsData().getStringStats().getBitVectors());
+      numBitVectors = nbvNew == nbvOld ? nbvNew : 0;
+      break;
+    }
+    case BINARY_STATS:
+      agg = new BinaryColumnStatsMerger();
+      break;
+    case DECIMAL_STATS: {
+      agg = new DecimalColumnStatsMerger();
+      int nbvNew = countNumBitVectors(statsObjNew.getStatsData().getDecimalStats().getBitVectors());
+      int nbvOld = countNumBitVectors(statsObjOld.getStatsData().getDecimalStats().getBitVectors());
+      numBitVectors = nbvNew == nbvOld ? nbvNew : 0;
+      break;
+    }
+    default:
+      throw new RuntimeException("Woh, bad.  Unknown stats type " + typeNew.toString());
     }
     if (numBitVectors > 0) {
       agg.ndvEstimator = new NumDistinctValueEstimator(numBitVectors);
@@ -103,32 +103,32 @@ public class ColumnStatsMergerFactory {
     cso.setColName(colName);
     cso.setColType(colType);
     switch (type) {
-      case BOOLEAN_STATS:
-        csd.setBooleanStats(new BooleanColumnStatsData());
-        break;
+    case BOOLEAN_STATS:
+      csd.setBooleanStats(new BooleanColumnStatsData());
+      break;
 
-      case LONG_STATS:
-        csd.setLongStats(new LongColumnStatsData());
-        break;
+    case LONG_STATS:
+      csd.setLongStats(new LongColumnStatsData());
+      break;
 
-      case DOUBLE_STATS:
-        csd.setDoubleStats(new DoubleColumnStatsData());
-        break;
+    case DOUBLE_STATS:
+      csd.setDoubleStats(new DoubleColumnStatsData());
+      break;
 
-      case STRING_STATS:
-        csd.setStringStats(new StringColumnStatsData());
-        break;
+    case STRING_STATS:
+      csd.setStringStats(new StringColumnStatsData());
+      break;
 
-      case BINARY_STATS:
-        csd.setBinaryStats(new BinaryColumnStatsData());
-        break;
+    case BINARY_STATS:
+      csd.setBinaryStats(new BinaryColumnStatsData());
+      break;
 
-      case DECIMAL_STATS:
-        csd.setDecimalStats(new DecimalColumnStatsData());
-        break;
+    case DECIMAL_STATS:
+      csd.setDecimalStats(new DecimalColumnStatsData());
+      break;
 
-      default:
-        throw new RuntimeException("Woh, bad.  Unknown stats type!");
+    default:
+      throw new RuntimeException("Woh, bad.  Unknown stats type!");
     }
 
     cso.setStatsData(csd);

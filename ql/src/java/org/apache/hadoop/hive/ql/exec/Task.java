@@ -340,7 +340,7 @@ public abstract class Task<T extends Serializable> implements Serializable, Node
   public static List<Task<? extends Serializable>>
       findLeafs(List<Task<? extends Serializable>> rootTasks) {
     final List<Task<? extends Serializable>> leafTasks = new ArrayList<Task<?>>();
-
+    // needs implicit casting to avoid compilation errors
     Collection<Task<? extends Serializable>> rootTaskCollection = rootTasks;
     NodeUtils.iterateTask(rootTaskCollection, Task.class, new NodeUtils.Function<Task>() {
       public void apply(Task task) {

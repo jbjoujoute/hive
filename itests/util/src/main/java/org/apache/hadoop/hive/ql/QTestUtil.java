@@ -1979,8 +1979,7 @@ public class QTestUtil {
     for (int i = 0; i < qfiles.length; i++) {
       qt[i] = new QTestUtil(resDir, logDir, MiniClusterType.none, null, "0.20",
         initScript == null ? defaultInitScript : initScript,
-        cleanupScript == null ? defaultCleanupScript : cleanupScript,
-        false);
+        cleanupScript == null ? defaultCleanupScript : cleanupScript,false);
       qt[i].addFile(qfiles[i]);
       qt[i].clearTestSideEffects();
     }

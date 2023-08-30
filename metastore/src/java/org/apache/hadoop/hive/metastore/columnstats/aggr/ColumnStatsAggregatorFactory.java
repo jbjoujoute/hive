@@ -37,26 +37,26 @@ public class ColumnStatsAggregatorFactory {
   public static ColumnStatsAggregator getColumnStatsAggregator(_Fields type, int numBitVectors, boolean useDensityFunctionForNDVEstimation) {
     ColumnStatsAggregator agg;
     switch (type) {
-      case BOOLEAN_STATS:
-        agg = new BooleanColumnStatsAggregator();
-        break;
-      case LONG_STATS:
-        agg = new LongColumnStatsAggregator();
-        break;
-      case DOUBLE_STATS:
-        agg = new DoubleColumnStatsAggregator();
-        break;
-      case STRING_STATS:
-        agg = new StringColumnStatsAggregator();
-        break;
-      case BINARY_STATS:
-        agg = new BinaryColumnStatsAggregator();
-        break;
-      case DECIMAL_STATS:
-        agg = new DecimalColumnStatsAggregator();
-        break;
-      default:
-        throw new RuntimeException("Woh, bad.  Unknown stats type " + type.toString());
+    case BOOLEAN_STATS:
+      agg = new BooleanColumnStatsAggregator();
+      break;
+    case LONG_STATS:
+      agg = new LongColumnStatsAggregator();
+      break;
+    case DOUBLE_STATS:
+      agg = new DoubleColumnStatsAggregator();
+      break;
+    case STRING_STATS:
+      agg = new StringColumnStatsAggregator();
+      break;
+    case BINARY_STATS:
+      agg = new BinaryColumnStatsAggregator();
+      break;
+    case DECIMAL_STATS:
+      agg = new DecimalColumnStatsAggregator();
+      break;
+    default:
+      throw new RuntimeException("Woh, bad.  Unknown stats type " + type.toString());
     }
     agg.numBitVectors = numBitVectors;
     agg.useDensityFunctionForNDVEstimation = useDensityFunctionForNDVEstimation;
