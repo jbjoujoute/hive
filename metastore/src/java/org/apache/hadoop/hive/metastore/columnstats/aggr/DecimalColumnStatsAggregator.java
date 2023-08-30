@@ -88,7 +88,7 @@ public class DecimalColumnStatsAggregator extends ColumnStatsAggregator implemen
         }
         if (isNDVBitVectorSet) {
           ndvEstimator.mergeEstimators(new NumDistinctValueEstimator(newData.getBitVectors(),
-                  ndvEstimator.getnumBitVectors()));
+              ndvEstimator.getnumBitVectors()));
         }
         if (aggregateData == null) {
           aggregateData = newData.deepCopy();
@@ -120,7 +120,7 @@ public class DecimalColumnStatsAggregator extends ColumnStatsAggregator implemen
           // if it is between lowerbound and higherbound.
           double densityAvg = densityAvgSum / partNames.size();
           long estimation = (long) ((MetaStoreUtils.decimalToDouble(aggregateData.getHighValue()) - MetaStoreUtils
-               .decimalToDouble(aggregateData.getLowValue())) / densityAvg);
+              .decimalToDouble(aggregateData.getLowValue())) / densityAvg);
           if (estimation < lowerBound) {
             aggregateData.setNumDVs(lowerBound);
           } else if (estimation > higherBound) {
