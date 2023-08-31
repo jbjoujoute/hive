@@ -32,14 +32,9 @@ import org.apache.hadoop.hive.metastore.api.ColumnStatisticsData;
 import org.apache.hadoop.hive.metastore.api.ColumnStatisticsObj;
 import org.apache.hadoop.hive.metastore.api.DoubleColumnStatsData;
 import org.apache.hadoop.hive.metastore.api.MetaException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class DoubleColumnStatsAggregator extends ColumnStatsAggregator implements
     IExtrapolatePartStatus {
-
-  private static final Logger LOG = LoggerFactory.getLogger(LongColumnStatsAggregator.class);
-
   @Override
   public ColumnStatisticsObj aggregate(String colName, List<String> partNames,
       List<ColumnStatistics> css) throws MetaException {
@@ -127,7 +122,6 @@ public class DoubleColumnStatsAggregator extends ColumnStatsAggregator implement
       columnStatisticsData.setDoubleStats(aggregateData);
     } else {
       // we need extrapolation
-      LOG.debug("start extrapolation for " + colName);
       Map<String, Integer> indexMap = new HashMap<String, Integer>();
       for (int index = 0; index < partNames.size(); index++) {
         indexMap.put(partNames.get(index), index);
@@ -215,8 +209,6 @@ public class DoubleColumnStatsAggregator extends ColumnStatsAggregator implement
       extrapolate(columnStatisticsData, partNames.size(), css.size(), adjustedIndexMap,
           adjustedStatsMap, densityAvgSum / adjustedStatsMap.size());
     }
-    LOG.debug("Ndv estimatation for " + colName + " is "
-        + columnStatisticsData.getDoubleStats().getNumDVs());
     statsObj.setStatsData(columnStatisticsData);
     return statsObj;
   }
